@@ -189,6 +189,7 @@
     color: var(--text);
   }
 
+
   @keyframes heroFadeUp {
     from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -808,7 +809,20 @@
     margin-bottom: 48px;
   }
 
-  .contact-heading span { color: var(--accent1); }
+  .contact-heading span.contact-hello { color: var(--accent1); }
+
+  .contact-heading .char {
+    display: inline-block;
+    white-space: pre;
+  }
+
+  .contact-heading .char:hover {
+    animation: letterJump 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+  }
+
+  .contact-heading .char.contact-hello {
+    color: var(--accent1);
+  }
 
   .contact-links {
     display: flex;
@@ -1047,7 +1061,7 @@
   <div class="contact-bg"></div>
   <div class="contact-content fade-up">
     <div class="contact-label">05 — Let's build something</div>
-    <h2 class="contact-heading">Say<br><span>Hello.</span></h2>
+    <h2 class="contact-heading"><span class="contact-word">Say</span><br><span class="contact-word contact-hello">Hello.</span></h2>
     <div class="contact-links">
       <a href="mailto:effyyuefan@gmail.com" class="contact-btn primary">
         ✉ Get in touch
@@ -1138,6 +1152,19 @@
     setTimeout(triggerNameJump, 1500);
     setInterval(triggerNameJump, 10000);
   }
+
+  // ── Split "Say Hello." into hoverable characters ──
+  document.querySelectorAll('.contact-heading .contact-word').forEach(word => {
+    const extraClass = word.classList.contains('contact-hello') ? 'contact-hello' : '';
+    const text = word.textContent;
+    word.textContent = '';
+    text.split('').forEach(ch => {
+      const span = document.createElement('span');
+      span.className = 'char' + (extraClass ? ' ' + extraClass : '');
+      span.textContent = ch;
+      word.appendChild(span);
+    });
+  });
 
   // ── Scroll reveal ──
   const obs = new IntersectionObserver((entries) => {
